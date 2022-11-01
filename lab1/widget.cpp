@@ -7,13 +7,16 @@
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
+    //1、窗口操作
+
     //设置窗口标题
     this->setWindowTitle("test");
     //设置窗口图标
     this->setWindowIcon(QIcon("C:/Users/tanghw/Desktop/lab.png"));
     //限制窗口大小
     this->setFixedSize(600,400);
-    //按钮操作
+
+    //2、按钮操作
     QPushButton *btn=new QPushButton;
     btn->setParent(this);
     btn->setText("thw");
@@ -22,7 +25,7 @@ Widget::Widget(QWidget *parent)
     QPushButton *btn2=new QPushButton("zfl",this);
     btn2->move(100,160);
 
-    //信号与槽
+    //3、信号与槽
     QPushButton * quitBtn = new QPushButton("关闭窗口",this);
     quitBtn->move(500,0);
     connect(quitBtn,&QPushButton::clicked,this,&Widget::close);
@@ -49,9 +52,7 @@ Widget::Widget(QWidget *parent)
     btn4->move(450,160);
     connect(btn4,&QPushButton::clicked,teac,teacherSignal0);
 
-
-
-    //lamba表达式
+    //4、lamba表达式
     connect(btn,&QPushButton::clicked,[=](){
         qDebug()<<"Clicked";});
 
@@ -59,21 +60,18 @@ Widget::Widget(QWidget *parent)
     btn5->move(250,360);
     connect(btn5,&QPushButton::clicked,this,[=](){emit teac->hurgry("宫保鸡丁");});
 
-    //作业：当前窗口新建一个按钮，初始时显示open，点击后弹出一个新窗口，按钮显示close，再点击后关闭当前窗口，同时按钮显示open
+    //5、作业：当前窗口新建一个按钮，初始时显示open，点击后弹出一个新窗口，按钮显示close，再点击后关闭当前窗口，同时按钮显示open
+    QWidget *one=new QWidget;
+    QPushButton *b1=new QPushButton("open",this);
+    b1->move(250,260);
+    connect(b1,&QPushButton::clicked,one,[=](){
+        if(b1->text() == "open")
+        {one->show();
+            b1->setText("close");}
 
-
-
-
-
-    /*
-也可以使用static_cast静态转换挑选我们要的函数
-connect(teacher,
-static_cast<void(Teacher:: *)(QString)>(&Teacher:: hurgry),
-student,
-static_cast<void(Student:: *)(QString)>(& Student::treat));
-*/
-
-
+        else if(b1->text() == "close")
+        {one->close();
+            b1->setText("open");}});
 }
 
 void Widget::ClassIsOver()
